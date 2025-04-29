@@ -1,4 +1,5 @@
+pymongo[srv]>=4.6
+dnspython>=2.3.0
+certifi>=2023.7.22
 fastapi
 uvicorn
-pymongo
-python-dotenv
