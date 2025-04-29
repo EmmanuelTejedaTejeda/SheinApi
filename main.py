@@ -11,6 +11,7 @@ app = FastAPI()
 client = pymongo.MongoClient("mongodb+srv://emmanuel2d28:omlydwtwu9RhJWTo@sheincluster.oddfa1j.mongodb.net/shein?retryWrites=true&w=majority")
 db = client["shein"]
 collection = db["shein_db"]
+clientes = db["clientes"]
 
 app.add_middleware(
     CORSMiddleware,
@@ -31,5 +32,11 @@ def serialize_document(doc):
 @app.get("/getProductos")
 def get_productos():
     documents =list(collection.find())
+    serialized_documents = [serialize_document(doc) for doc in documents]
+    return JSONResponse(content=serialized_documents)
+
+@app.get("/getClientes")
+def get_clientes():
+    documents =list(clientes.find())
     serialized_documents = [serialize_document(doc) for doc in documents]
     return JSONResponse(content=serialized_documents)
