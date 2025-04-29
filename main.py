@@ -40,3 +40,11 @@ def get_clientes():
     documents =list(clientes.find())
     serialized_documents = [serialize_document(doc) for doc in documents]
     return JSONResponse(content=serialized_documents)
+@app.get("/searchProductos")
+def search_productos(name: str = None):
+    query = {}
+    if name:
+        query["nombre"] = {"$regex": name, "$options": "i"}  # Búsqueda insensible a mayúsculas/minúsculas
+    documents = list(collection.find(query))
+    serialized_documents = [serialize_document(doc) for doc in documents]
+    return JSONResponse(content=serialized_documents)
