@@ -9,10 +9,10 @@ from fastapi.middleware.cors import CORSMiddleware
 app = FastAPI()
 
 client = pymongo.MongoClient("mongodb+srv://emmanuel2d28:omlydwtwu9RhJWTo@sheincluster.oddfa1j.mongodb.net/shein?retryWrites=true&w=majority")
-db = client["shein"]
-collection = db["shein_db"]
+db = client["MERCADOLIBRE"]
 clientes = db["clientes"]
-
+productos = db["productos"]
+tipo = db["tipo"]
 app.add_middleware(
     CORSMiddleware,
     allow_origins =["*"],
@@ -29,17 +29,24 @@ def serialize_document(doc):
             doc[key] = str(value)
     return doc
 
-@app.get("/getProductos")
-def get_productos():
-    documents =list(collection.find())
-    serialized_documents = [serialize_document(doc) for doc in documents]
-    return JSONResponse(content=serialized_documents)
-
 @app.get("/getClientes")
-def get_clientes():
+def get_productos():
     documents =list(clientes.find())
     serialized_documents = [serialize_document(doc) for doc in documents]
     return JSONResponse(content=serialized_documents)
+
+@app.get("/getProductos")
+def get_clientes():
+    documents =list(productos.find())
+    serialized_documents = [serialize_document(doc) for doc in documents]
+    return JSONResponse(content=serialized_documents)
+
+@app.get("/getTipos")
+def get_clientes():
+    documents =list(tipo.find())
+    serialized_documents = [serialize_document(doc) for doc in documents]
+    return JSONResponse(content=serialized_documents)
+
 @app.get("/buscar")
 def search_productos(nombre: str = None):
     query = {}
