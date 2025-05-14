@@ -50,7 +50,9 @@ def delete_clientes(id:str):
 
 @app.post("/clientes/createCliente")
 def create_clientes(request:Request):
-    
+    data = await request.json()
+    result = clientes.insert_one(data)
+    return JSONResponse(content={"mensaje": "Cliente creado", "id": str(result.inserted_id)})
         
 
 @app.get("/getProductos")
