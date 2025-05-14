@@ -49,7 +49,7 @@ def delete_clientes(id:str):
         raise HTTPException(status_code=400, detail=str(e))
 
 @app.post("/clientes/createCliente")
-def create_clientes(request:Request):
+async def create_clientes(request:Request):
     data = await request.json()
     result = clientes.insert_one(data)
     return JSONResponse(content={"mensaje": "Cliente creado", "id": str(result.inserted_id)})
