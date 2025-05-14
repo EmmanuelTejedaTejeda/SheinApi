@@ -37,7 +37,7 @@ def get_productos():
     serialized_documents = [serialize_document(doc) for doc in documents]
     return JSONResponse(content=serialized_documents)
 
-@app.delete("clientes/deleteClientes/{id})
+@app.delete("clientes/deleteClientes/{id}")
 def delete_clientes(id:str):
     try:
         result = clientes.delete_one({"_id": ObjectId(id)})
