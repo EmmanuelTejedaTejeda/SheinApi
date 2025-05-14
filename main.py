@@ -5,6 +5,8 @@ from fastapi.responses import JSONResponse
 from datetime import datetime
 from bson import ObjectId
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi import FastAPI, HTTPException
+from bson import ObjectId
 
 app = FastAPI()
 
@@ -29,11 +31,23 @@ def serialize_document(doc):
             doc[key] = str(value)
     return doc
 
-@app.get("/getClientes")
+@app.get("/clientes/getClientes")
 def get_productos():
     documents =list(clientes.find())
     serialized_documents = [serialize_document(doc) for doc in documents]
     return JSONResponse(content=serialized_documents)
+
+@app.delete("clientes/deleteClientes/{id})
+def delete_clientes(id:str):
+    try:
+        result = clientes.delete_one({"_id": ObjectId(id)})
+        if result.deleted_count == 1:
+            return JSONResponse(content={"mensaje": "Cliente eliminado correctamente"})
+        else:
+            raise HTTPException(status_code=404, detail="Cliente no encontrado")
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))
+        
 
 @app.get("/getProductos")
 def get_clientes():
