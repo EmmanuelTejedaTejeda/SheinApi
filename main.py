@@ -70,7 +70,7 @@ def delete_clientes(id:str):
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
     
-@app.get("/productos/createProductos")
+@app.post("/productos/createProductos")
 async def create_clientes(requesrt:Request):
     data =await request.json()
     result = clientes.insert_one(data)
