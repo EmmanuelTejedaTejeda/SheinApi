@@ -74,7 +74,7 @@ def delete_clientes(id:str):
 async def create_clientes(requesrt:Request):
     data =await request.json()
     result = clientes.insert_one(data)
-    return JSONResponse(content={"mensaje":"Producto creado": str(result.inserted_id)})
+    return JSONResponse(content={"mensaje":"Producto creado", "id": str(result.inserted_id)})
 
 @app.get("/getTipos")
 def get_clientes():
