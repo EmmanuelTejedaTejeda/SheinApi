@@ -53,11 +53,28 @@ async def create_clientes(request:Request):
     return JSONResponse(content={"mensaje": "Cliente creado", "id": str(result.inserted_id)})
         
 
-@app.get("/getProductos")
+@app.get("/productos/getProductos")
 def get_clientes():
     documents =list(productos.find())
     serialized_documents = [serialize_document(doc) for doc in documents]
     return JSONResponse(content=serialized_documents)
+    
+@app.delete("/productos/getProductos/{id}")
+def delete_clientes(id:str):
+    try:
+        result = productos.delete_one({"_id": ObjectId(id)})
+        if result.deleted_count == 1:
+            return JSONResponse(content={"mensaje": "Producto eliminado correctamente"})
+        else:
+            raise HTTPException(status_code=404, detail="Producto no encontrado")
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))
+    
+@app.get("/productos/createProductos")
+async def create_clientes(requesrt:Request):
+    data =await request.json()
+    result = clientes.insert_one(data)
+    return JSONResponse(content={"mensaje":"Producto creado": str(result.inserted_id)})
 
 @app.get("/getTipos")
 def get_clientes():
