@@ -120,7 +120,7 @@ def get_tipos():
     return JSONResponse(content=serialized_documents)
 
 @app.get("/compras/getCompras")
-def get_clientes():
+def get_compras():
     documents =list(compras.find())
     serialized_documents = [serialize_document(doc) for doc in documents]
     return JSONResponse(content=serialized_documents)
