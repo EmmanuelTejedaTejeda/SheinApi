@@ -52,7 +52,7 @@ async def create_clientes(request:Request):
     result = clientes.insert_one(data)
     return JSONResponse(content={"mensaje": "Cliente creado", "id": str(result.inserted_id)})
 
-@app.post("/productos/updateClientes/{id}")
+@app.post("/clientes/updateClientes/{id}")
 async def update_clientes(id: str, request: Request):
     try:
         data = await request.json()
