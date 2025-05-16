@@ -76,6 +76,28 @@ async def create_productos(request:Request):
     result = productos.insert_one(data)
     return JSONResponse(content={"mensaje":"Producto creado", "id": str(result.inserted_id)})
 
+
+@app.post("/productos/updateProductos/{id}")
+async def update_producto(id: str, request: Request):
+    try:
+        data = await request.json()
+
+        # Asegura que no se envíe el _id dentro del update
+        if "_id" in data:
+            del data["_id"]
+
+        result = productos.update_one(
+            {"_id": ObjectId(id)},
+            {"$set": data}
+        )
+
+        if result.matched_count == 1:
+            return JSONResponse(content={"mensaje": "Producto actualizado correctamente"})
+        else:
+            raise HTTPException(status_code=404, detail="Producto no encontrado")
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))
+
 @app.get("/getTipos")
 def get_tipos():
     documents =list(tipo.find())
