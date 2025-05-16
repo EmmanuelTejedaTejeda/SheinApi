@@ -51,6 +51,23 @@ async def create_clientes(request:Request):
     data = await request.json()
     result = clientes.insert_one(data)
     return JSONResponse(content={"mensaje": "Cliente creado", "id": str(result.inserted_id)})
+
+@app.post("/productos/updateClientes/{id}")
+async def update_clientes(id: str, request: Request):
+    try:
+        data = await request.json()
+        if "_id" in data:
+            del data["_id"]
+        result = clientes.update_one(
+            {"_id": ObjectId(id)},
+            {"$set": data}
+        )
+        if result.matched_count == 1:
+            return JSONResponse(content={"mensaje": "Cliente actualizado correctamente"})
+        else:
+            raise HTTPException(status_code=404, detail="Cliente no encontrado")
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))
         
 
 @app.get("/productos/getProductos")
@@ -81,16 +98,12 @@ async def create_productos(request:Request):
 async def update_producto(id: str, request: Request):
     try:
         data = await request.json()
-
-        # Asegura que no se envíe el _id dentro del update
         if "_id" in data:
             del data["_id"]
-
         result = productos.update_one(
             {"_id": ObjectId(id)},
             {"$set": data}
         )
-
         if result.matched_count == 1:
             return JSONResponse(content={"mensaje": "Producto actualizado correctamente"})
         else:
