@@ -125,6 +125,12 @@ def get_compras():
     serialized_documents = [serialize_document(doc) for doc in documents]
     return JSONResponse(content=serialized_documents)
 
+@app.post("/compras/createCompras")
+async def create_compras(request:Request):
+    data = await request.json()
+    result = compras.insert_one(data)
+    return JSONResponse(content={"mensaje": "Compra creada", "id": str(result.inserted_id)})
+
 @app.get("/buscar")
 def search_productos(nombre: str = None):
     query = {}
