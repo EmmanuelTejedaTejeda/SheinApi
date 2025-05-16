@@ -13,6 +13,8 @@ db = client["MERCADOLIBRE"]
 clientes = db["clientes"]
 productos = db["productos"]
 tipo = db["tipo"]
+compras = db["compras"]
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins =["*"],
@@ -114,6 +116,12 @@ async def update_producto(id: str, request: Request):
 @app.get("/getTipos")
 def get_tipos():
     documents =list(tipo.find())
+    serialized_documents = [serialize_document(doc) for doc in documents]
+    return JSONResponse(content=serialized_documents)
+
+@app.get("/compras/getCompras")
+def get_clientes():
+    documents =list(compras.find())
     serialized_documents = [serialize_document(doc) for doc in documents]
     return JSONResponse(content=serialized_documents)
 
