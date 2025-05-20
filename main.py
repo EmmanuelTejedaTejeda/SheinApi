@@ -136,6 +136,6 @@ def search_productos(nombre: str = None):
     query = {}
     if nombre:
         query["nombre"] = {"$regex": nombre, "$options": "i"}  # Búsqueda insensible a mayúsculas/minúsculas
-    documents = list(collection.find(query))
+    documents = list(productos.find(query))
     serialized_documents = [serialize_document(doc) for doc in documents]
     return JSONResponse(content=serialized_documents)
